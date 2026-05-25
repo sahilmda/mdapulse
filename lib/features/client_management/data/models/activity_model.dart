@@ -19,6 +19,9 @@ class ActivityLog {
   final String statusBadge;
   final String progress;
   final List<ActivityRemark> remarks;
+  final String sno;
+  final String uid;
+  final String product;
 
   ActivityLog({
     required this.activityType,
@@ -27,5 +30,8 @@ class ActivityLog {
     required this.statusBadge,
     required this.progress,
     required this.remarks,
+    this.sno = '',
+    this.uid = '',
+    this.product = '',
   });
 }

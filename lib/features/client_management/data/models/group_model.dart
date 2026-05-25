@@ -19,12 +19,14 @@ class GroupMember {
 }
 
 class CustomerGroup {
+  final String snoArch;
   final String groupName;
   final String city;
   final String mobileNumber;
   final List<GroupMember> members;
 
   CustomerGroup({
+    required this.snoArch,
     required this.groupName,
     required this.city,
     required this.mobileNumber,

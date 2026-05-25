@@ -2,10 +2,16 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:mda_crm/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:mda_crm/features/client_management/presentation/screens/customer_screen.dart';
 import 'package:mda_crm/features/task_management/presentation/screens/task_screen.dart';
 import 'package:mda_crm/features/employee_management/presentation/screens/employee_screen.dart';
 import 'package:mda_crm/features/settings/presentation/screens/setting_screen.dart';
+import 'package:mda_crm/features/reports/presentations/screens/reports_screen.dart';
+import 'package:mda_crm/features/workflow/presentation/screens/workflow_screen.dart';
+import 'package:mda_crm/features/quotation/presentation/screens/quotation_screen.dart';
+import 'package:mda_crm/features/messaging/presentation/screens/messaging_screen.dart';
+import 'package:mda_crm/shared/theme/theme_notifier.dart';
 
 const Color mdaPrimaryBlue = Color(0xFF0257E6);
 
@@ -21,9 +27,13 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: mdaPrimaryBlue,
-      child: SafeArea(
+    return ValueListenableBuilder<ThemeState>(
+      valueListenable: themeNotifier,
+      builder: (context, themeState, _) {
+        final sidebarColor = themeState.sidebarColor;
+        return Drawer(
+          backgroundColor: sidebarColor,
+          child: SafeArea(
         child: Column(
           children: [
             Padding(
@@ -68,41 +78,55 @@ class AppDrawer extends StatelessWidget {
                     context,
                     icon: Icons.show_chart,
                     title: 'Dashboard',
+                    sidebarColor: sidebarColor,
                   ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.people,
                     title: 'Customer',
+                    sidebarColor: sidebarColor,
                   ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.description,
                     title: 'Reports',
+                    sidebarColor: sidebarColor,
                   ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.assignment,
                     title: 'Tasks',
+                    sidebarColor: sidebarColor,
                   ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.request_quote,
                     title: 'Quotation',
+                    sidebarColor: sidebarColor,
                   ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.work,
                     title: 'Employee',
+                    sidebarColor: sidebarColor,
+                  ),
+                  _buildDrawerItem(
+                    context,
+                    icon: Icons.account_tree_outlined,
+                    title: 'Workflows',
+                    sidebarColor: sidebarColor,
                   ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.email,
                     title: 'Messaging',
+                    sidebarColor: sidebarColor,
                   ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.settings,
                     title: 'Settings',
+                    sidebarColor: sidebarColor,
                   ),
                 ],
               ),
@@ -111,22 +135,25 @@ class AppDrawer extends StatelessWidget {
         ),
       ),
     );
+      },
+    );
   }
 
   Widget _buildDrawerItem(
     BuildContext context, {
     required IconData icon,
     required String title,
+    required Color sidebarColor,
   }) {
     final bool isSelected = currentRoute == title;
     return Container(
       color: isSelected ? Colors.white : Colors.transparent,
       child: ListTile(
-        leading: Icon(icon, color: isSelected ? mdaPrimaryBlue : Colors.white),
+        leading: Icon(icon, color: isSelected ? sidebarColor : Colors.white),
         title: Text(
           title,
           style: TextStyle(
-            color: isSelected ? mdaPrimaryBlue : Colors.white,
+            color: isSelected ? sidebarColor : Colors.white,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
           ),
         ),
@@ -134,12 +161,22 @@ class AppDrawer extends StatelessWidget {
           Navigator.pop(context);
           if (!isSelected) {
             Widget? nextScreen;
-            if (title == 'Customer') {
+            if (title == 'Dashboard') {
+              nextScreen = const DashboardScreen();
+            } else if (title == 'Customer') {
               nextScreen = CustomerScreen();
+            } else if (title == 'Reports') {
+              nextScreen = const ReportsScreen();
             } else if (title == 'Tasks') {
               nextScreen = TaskScreen();
             } else if (title == 'Employee') {
               nextScreen = EmployeeScreen();
+            } else if (title == 'Quotation') {
+              nextScreen = const QuotationScreen();
+            } else if (title == 'Workflows') {
+              nextScreen = const WorkflowScreen();
+            } else if (title == 'Messaging') {
+              nextScreen = const MessagingScreen();
             } else if (title == 'Settings') {
               nextScreen = SettingScreen();
             }
